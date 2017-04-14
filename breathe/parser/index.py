@@ -4,6 +4,7 @@ Generated Mon Feb  9 19:08:05 2009 by generateDS.py.
 
 from xml.dom import minidom
 from xml.parsers.expat import ExpatError
+import xml.etree.ElementTree as ET
 
 
 from . import indexsuper as supermod
@@ -47,13 +48,15 @@ class FileIOError(Exception):
 def parse(inFilename):
 
     try:
-        doc = minidom.parse(inFilename)
+        #doc = minidom.parse(inFilename)
+        doc = ET.parse(inFilename)
     except IOError as e:
         raise FileIOError(e)
     except ExpatError as e:
         raise ParseError(e)
 
-    rootNode = doc.documentElement
+    #rootNode = doc.documentElement
+    rootNode = doc.getroot()
     rootObj = supermod.DoxygenType.factory()
     rootObj.build(rootNode)
 

@@ -5,7 +5,8 @@
 import sys
 import getopt
 from xml.dom import minidom
-from xml.dom import Node
+#from xml.dom import Node
+import xml.etree.ElementTree as ET
 
 #
 # User methods
@@ -175,17 +176,17 @@ class DoxygenType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        #attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag #nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('version'):
-            self.version = attrs.get('version').value
+            self.version = attrs.get('version') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'compound':
+        if nodeName_ == 'compound':
             obj_ = CompoundType.factory()
             obj_.build(child_)
             self.compound.append(obj_)
@@ -220,25 +221,24 @@ class CompoundType(GeneratedsSuper):
     def get_refid(self): return self.refid
     def set_refid(self, refid): self.refid = refid
     def build(self, node_):
-        attrs = node_.attributes
+        #attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag #nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
+        if nodeName_ == 'name':
             name_ = ''
-            for text__content_ in child_.childNodes:
+            for text__content_ in child_: #.childNodes:
                 name_ += text__content_.nodeValue
             self.name = name_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'member':
+        elif nodeName_ == 'member':
             obj_ = MemberType.factory()
             obj_.build(child_)
             self.member.append(obj_)
@@ -272,21 +272,21 @@ class MemberType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        #attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag #nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
+        if nodeName_ == 'name':
             name_ = ''
-            for text__content_ in child_.childNodes:
+            for text__content_ in child_: #.childNodes:
                 name_ += text__content_.nodeValue
             self.name = name_
 # end class MemberType
@@ -304,8 +304,10 @@ def usage():
 
 
 def parse(inFileName):
-    doc = minidom.parse(inFileName)
-    rootNode = doc.documentElement
+    #doc = minidom.parse(inFileName)
+    doc = ET.parse(inFileName)
+    #rootNode = doc.documentElement
+    rootNote = doc.find("doxygenindex")
     rootObj = DoxygenType.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -317,10 +319,12 @@ def parse(inFileName):
 
 
 def parseString(inString):
-    doc = minidom.parseString(inString)
-    rootNode = doc.documentElement
-    rootObj = DoxygenType.factory()
-    rootObj.build(rootNode)
+    #doc = minidom.parseString(inString)
+    #rootNode = doc.documentElement
+    #rootObj = DoxygenType.factory()
+    #rootObj.build(rootNode)
+    doc = ET.fromstring(inString)
+    rootObj = doc.getroot()
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('<?xml version="1.0" ?>\n')
@@ -330,8 +334,10 @@ def parseString(inString):
 
 
 def parseLiteral(inFileName):
-    doc = minidom.parse(inFileName)
-    rootNode = doc.documentElement
+    #doc = minidom.parse(inFileName)
+    doc = ET.parse(inFileName)
+    #rootNode = doc.documentElement
+    rootNode = doc.find("doxygenindex")
     rootObj = DoxygenType.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.

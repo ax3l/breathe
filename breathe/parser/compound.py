@@ -4,8 +4,9 @@ This file contains manual modifications.
 """
 
 from xml.dom import minidom
-from xml.dom import Node
+#from xml.dom import Node
 from xml.parsers.expat import ExpatError
+import xml.etree.ElementTree as ET
 
 from . import compoundsuper as supermod
 from .compoundsuper import MixedContainer
@@ -176,7 +177,7 @@ class memberdefTypeSub(supermod.memberdefType):
     def buildChildren(self, child_, nodeName_):
         supermod.memberdefType.buildChildren(self, child_, nodeName_)
 
-        if child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'param':
+        if nodeName_ == 'param':
 
             # Get latest param
             param = self.param[-1]
@@ -206,7 +207,7 @@ class memberdefTypeSub(supermod.memberdefType):
 
             self.parameterlist.parameteritem.append(paramlistitem)
 
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'detaileddescription':
+        elif nodeName_ == 'detaileddescription':
 
             if not self.parameterlist.parameteritem:
                 # No items in our list
@@ -261,21 +262,21 @@ class enumvalueTypeSub(supermod.enumvalueType):
 
     def buildChildren(self, child_, nodeName_):
         # Get text from <name> child and put it in self.name
-        if child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'name':
+        if nodeName_ == 'name':
             value_ = []
-            for text_ in child_.childNodes:
-                value_.append(text_.nodeValue)
+            for text_ in child_: #.childNodes:
+                value_.append(text_.text)
             valuestr_ = ''.join(value_)
             self.name = valuestr_
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'briefdescription':
+        elif nodeName_ == 'briefdescription':
             obj_ = supermod.descriptionType.factory()
             obj_.build(child_)
             self.set_briefdescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'detaileddescription':
+        elif nodeName_ == 'detaileddescription':
             obj_ = supermod.descriptionType.factory()
             obj_.build(child_)
             self.set_detaileddescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'initializer':
+        elif nodeName_ == 'initializer':
             childobj_ = supermod.linkedTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex, MixedContainer.TypeNone,
@@ -337,28 +338,28 @@ supermod.graphType.subclass = graphTypeSub
 # end class graphTypeSub
 
 
-class nodeTypeSub(supermod.nodeType):
+class tagSub(supermod.tag):
 
     node_type = "node"
 
     def __init__(self, id=None, label='', link=None, childnode=None):
-        supermod.nodeType.__init__(self, id, label, link, childnode)
+        supermod.tag.__init__(self, id, label, link, childnode)
 
 
-supermod.nodeType.subclass = nodeTypeSub
-# end class nodeTypeSub
+supermod.tag.subclass = tagSub
+# end class tagSub
 
 
-class childnodeTypeSub(supermod.childnodeType):
+class childtagSub(supermod.childtag):
 
     node_type = "childnode"
 
     def __init__(self, relation=None, refid=None, edgelabel=None):
-        supermod.childnodeType.__init__(self, relation, refid, edgelabel)
+        supermod.childtag.__init__(self, relation, refid, edgelabel)
 
 
-supermod.childnodeType.subclass = childnodeTypeSub
-# end class childnodeTypeSub
+supermod.childtag.subclass = childtagSub
+# end class childtagSub
 
 
 class linkTypeSub(supermod.linkType):
@@ -659,7 +660,7 @@ class docRefTextTypeSub(supermod.docRefTextType):
     def buildChildren(self, child_, nodeName_):
         supermod.docRefTextType.buildChildren(self, child_, nodeName_)
 
-        if child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'para':
+        if nodeName_ == 'para':
             obj_ = supermod.docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
@@ -718,14 +719,13 @@ class docHeadingTypeSub(supermod.docHeadingType):
         # Account for styled content in the heading. This might need to be expanded to include other
         # nodes as it seems from the xsd that headings can have a lot of different children but we
         # really don't expect most of them to come up.
-        if child_.nodeType == Node.ELEMENT_NODE and (
-                nodeName_ == 'bold' or
-                nodeName_ == 'emphasis' or
-                nodeName_ == 'computeroutput' or
-                nodeName_ == 'subscript' or
-                nodeName_ == 'superscript' or
-                nodeName_ == 'center' or
-                nodeName_ == 'small'):
+        if nodeName_ == 'bold' or \
+                nodeName_ == 'emphasis' or \
+                nodeName_ == 'computeroutput' or \
+                nodeName_ == 'subscript' or \
+                nodeName_ == 'superscript' or \
+                nodeName_ == 'center' or \
+                nodeName_ == 'small':
             obj_ = supermod.docMarkupType.factory()
             obj_.build(child_)
             obj_.type_ = nodeName_
@@ -912,13 +912,13 @@ class verbatimTypeSub(object):
         attrs = node_.attributes
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
+        for child_ in node_: #.childNodes:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
 
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.text += child_.nodeValue
+        if child_.text: #tag == Node.TEXT_NODE:
+            self.text += child_.text
 
 
 class docParaTypeSub(supermod.docParaType):
@@ -937,70 +937,69 @@ class docParaTypeSub(supermod.docParaType):
     def buildChildren(self, child_, nodeName_):
         supermod.docParaType.buildChildren(self, child_, nodeName_)
 
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                                    MixedContainer.TypeNone, '', child_.nodeValue)
+                                    MixedContainer.TypeNone, '', child_.text)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == "ref":
+        elif nodeName_ == "ref":
             obj_ = supermod.docRefTextType.factory()
             obj_.build(child_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'parameterlist':
+        elif nodeName_ == 'parameterlist':
             obj_ = supermod.docParamListType.factory()
             obj_.build(child_)
             self.parameterlist.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'simplesect':
+        elif nodeName_ == 'simplesect':
             obj_ = supermod.docSimpleSectType.factory()
             obj_.build(child_)
             self.simplesects.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'programlisting':
+        elif nodeName_ == 'programlisting':
             obj_ = supermod.listingType.factory()
             obj_.build(child_)
             # Add programlisting nodes to self.content rather than self.programlisting,
             # because programlisting and content nodes can interleave as shown in
             # https://www.stack.nl/~dimitri/doxygen/manual/examples/include/html/example.html.
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'image':
+        elif nodeName_ == 'image':
             obj_ = supermod.docImageType.factory()
             obj_.build(child_)
             self.images.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and (
-                nodeName_ == 'bold' or
-                nodeName_ == 'emphasis' or
-                nodeName_ == 'computeroutput' or
-                nodeName_ == 'subscript' or
-                nodeName_ == 'superscript' or
-                nodeName_ == 'center' or
-                nodeName_ == 'small'):
+        elif nodeName_ == 'bold' or \
+                nodeName_ == 'emphasis' or \
+                nodeName_ == 'computeroutput' or \
+                nodeName_ == 'subscript' or \
+                nodeName_ == 'superscript' or \
+                nodeName_ == 'center' or \
+                nodeName_ == 'small':
             obj_ = supermod.docMarkupType.factory()
             obj_.build(child_)
             obj_.type_ = nodeName_
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'verbatim':
+        elif nodeName_ == 'verbatim':
             childobj_ = verbatimTypeSub.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex, MixedContainer.TypeNone,
                                     'verbatim', childobj_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'formula':
+        elif nodeName_ == 'formula':
             childobj_ = docFormulaTypeSub.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex, MixedContainer.TypeNone,
                                     'formula', childobj_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == "itemizedlist":
+        elif nodeName_ == "itemizedlist":
             obj_ = supermod.docListType.factory(subtype="itemized")
             obj_.build(child_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == "orderedlist":
+        elif nodeName_ == "orderedlist":
             obj_ = supermod.docListType.factory(subtype="ordered")
             obj_.build(child_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'heading':
+        elif nodeName_ == 'heading':
             obj_ = supermod.docHeadingType.factory()
             obj_.build(child_)
             self.content.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'ulink':
+        elif nodeName_ == 'ulink':
             obj_ = supermod.docURLLink.factory()
             obj_.build(child_)
             self.content.append(obj_)
@@ -1019,20 +1018,20 @@ class docMarkupTypeSub(supermod.docMarkupType):
         self.type_ = None
 
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText, MixedContainer.TypeNone, '',
-                                    child_.nodeValue)
+                                    child_.text)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and nodeName_ == 'ref':
+        elif nodeName_ == 'ref':
             childobj_ = supermod.docRefTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex, MixedContainer.TypeNone, 'ref',
                                     childobj_)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA[' + child_.nodeValue + ']]'
+        if child_.text: #tag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA[' + child_.tail + ']]'
 
 
 supermod.docMarkupType.subclass = docMarkupTypeSub
@@ -1063,13 +1062,15 @@ class FileIOError(Exception):
 def parse(inFilename):
 
     try:
-        doc = minidom.parse(inFilename)
+        #doc = minidom.parse(inFilename)
+        doc = ET.parse(inFilename)
     except IOError as e:
         raise FileIOError(e)
     except ExpatError as e:
         raise ParseError(e)
 
-    rootNode = doc.documentElement
+    #rootNode = doc.documentElement
+    rootNode = doc.getroot()
     rootObj = supermod.DoxygenType.factory()
     rootObj.build(rootNode)
     return rootObj

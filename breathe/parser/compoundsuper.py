@@ -5,7 +5,8 @@
 import sys
 import getopt
 from xml.dom import minidom
-from xml.dom import Node
+#from xml.dom import Node
+import xml.etree.ElementTree as ET
 
 #
 # User methods
@@ -173,17 +174,17 @@ class DoxygenType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        #attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('version'):
-            self.version = attrs.get('version').value
+            self.version = attrs.get('version') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'compounddef':
+        if        nodeName_ == 'compounddef':
             obj_ = compounddefType.factory()
             obj_.build(child_)
             self.set_compounddef(obj_)
@@ -364,134 +365,111 @@ class compounddefType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'compoundname':
+        if        nodeName_ == 'compoundname':
             compoundname_ = ''
-            for text__content_ in child_.childNodes:
-                compoundname_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                compoundname_ += text__content_.text
             self.compoundname = compoundname_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        elif        nodeName_ == 'title':
             obj_ = docTitleType.factory()
             obj_.build(child_)
             self.set_title(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'basecompoundref':
+        elif        nodeName_ == 'basecompoundref':
             obj_ = compoundRefType.factory()
             obj_.build(child_)
             self.basecompoundref.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'derivedcompoundref':
+        elif        nodeName_ == 'derivedcompoundref':
             obj_ = compoundRefType.factory()
             obj_.build(child_)
             self.derivedcompoundref.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'includes':
+        elif        nodeName_ == 'includes':
             obj_ = incType.factory()
             obj_.build(child_)
             self.includes.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'includedby':
+        elif        nodeName_ == 'includedby':
             obj_ = incType.factory()
             obj_.build(child_)
             self.includedby.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'incdepgraph':
+        elif        nodeName_ == 'incdepgraph':
             obj_ = graphType.factory()
             obj_.build(child_)
             self.set_incdepgraph(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'invincdepgraph':
+        elif        nodeName_ == 'invincdepgraph':
             obj_ = graphType.factory()
             obj_.build(child_)
             self.set_invincdepgraph(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innerdir':
+        elif        nodeName_ == 'innerdir':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innerdir.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innerfile':
+        elif        nodeName_ == 'innerfile':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innerfile.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innerclass':
+        elif        nodeName_ == 'innerclass':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innerclass.append(obj_)
-            self.namespaces.append(obj_.content_[0].getValue())
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innernamespace':
+            #self.namespaces.append(obj_.content_[0].getValue())
+        elif        nodeName_ == 'innernamespace':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innernamespace.append(obj_)
-            self.namespaces.append(obj_.content_[0].getValue())
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innerpage':
+            #self.namespaces.append(obj_.content_[0].getValue())
+        elif        nodeName_ == 'innerpage':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innerpage.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'innergroup':
+        elif        nodeName_ == 'innergroup':
             obj_ = refType.factory(nodeName_)
             obj_.build(child_)
             self.innergroup.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'templateparamlist':
+        elif        nodeName_ == 'templateparamlist':
             obj_ = templateparamlistType.factory()
             obj_.build(child_)
             self.set_templateparamlist(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sectiondef':
+        elif        nodeName_ == 'sectiondef':
             obj_ = sectiondefType.factory()
             obj_.build(child_)
             self.sectiondef.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'briefdescription':
+        elif        nodeName_ == 'briefdescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_briefdescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'detaileddescription':
+        elif        nodeName_ == 'detaileddescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_detaileddescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'inheritancegraph':
+        elif        nodeName_ == 'inheritancegraph':
             obj_ = graphType.factory()
             obj_.build(child_)
             self.set_inheritancegraph(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'collaborationgraph':
+        elif        nodeName_ == 'collaborationgraph':
             obj_ = graphType.factory()
             obj_.build(child_)
             self.set_collaborationgraph(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'programlisting':
+        elif        nodeName_ == 'programlisting':
             obj_ = listingType.factory()
             obj_.build(child_)
             self.set_programlisting(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'location':
+        elif        nodeName_ == 'location':
             obj_ = locationType.factory()
             obj_.build(child_)
             self.set_location(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'listofallmembers':
+        elif        nodeName_ == 'listofallmembers':
             obj_ = listofallmembersType.factory()
             obj_.build(child_)
             self.set_listofallmembers(obj_)
@@ -524,16 +502,15 @@ class listofallmembersType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'member':
+        if        nodeName_ == 'member':
             obj_ = memberRefType.factory()
             obj_.build(child_)
             self.member.append(obj_)
@@ -577,32 +554,30 @@ class memberRefType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('virt'):
-            self.virt = attrs.get('virt').value
+            self.virt = attrs.get('virt') #.value
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
         if attrs.get('ambiguityscope'):
-            self.ambiguityscope = attrs.get('ambiguityscope').value
+            self.ambiguityscope = attrs.get('ambiguityscope') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'scope':
+        if        nodeName_ == 'scope':
             scope_ = ''
-            for text__content_ in child_.childNodes:
-                scope_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                scope_ += text__content_.text
             self.scope = scope_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
+        elif        nodeName_ == 'name':
             name_ = ''
-            for text__content_ in child_.childNodes:
-                name_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                name_ += text__content_.text
             self.name = name_
 # end class memberRefType
 
@@ -628,19 +603,20 @@ class scope(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class scope
 
 
@@ -665,19 +641,20 @@ class name(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class name
 
 
@@ -718,28 +695,29 @@ class compoundRefType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('virt'):
-            self.virt = attrs.get('virt').value
+            self.virt = attrs.get('virt') #.value
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class compoundRefType
 
 
@@ -774,24 +752,25 @@ class reimplementType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class reimplementType
 
 
@@ -829,26 +808,27 @@ class incType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('local'):
-            self.local = attrs.get('local').value
+            self.local = attrs.get('local') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class incType
 
 
@@ -886,26 +866,27 @@ class refType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class refType
 
 
@@ -946,28 +927,29 @@ class refTextType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
         if attrs.get('kindref'):
-            self.kindref = attrs.get('kindref').value
+            self.kindref = attrs.get('kindref') #.value
         if attrs.get('external'):
-            self.external = attrs.get('external').value
+            self.external = attrs.get('external') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class refTextType
 
 
@@ -1008,28 +990,25 @@ class sectiondefType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'header':
+        if        nodeName_ == 'header':
             header_ = ''
-            for text__content_ in child_.childNodes:
-                header_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                header_ += text__content_.text
             self.header = header_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'description':
+        elif        nodeName_ == 'description':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_description(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'memberdef':
+        elif        nodeName_ == 'memberdef':
             obj_ = memberdefType.factory()
             obj_.build(child_)
             self.memberdef.append(obj_)
@@ -1226,158 +1205,138 @@ class memberdefType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('initonly'):
-            self.initonly = attrs.get('initonly').value
+            self.initonly = attrs.get('initonly') #.value
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
         if attrs.get('volatile'):
-            self.volatile = attrs.get('volatile').value
+            self.volatile = attrs.get('volatile') #.value
         if attrs.get('const'):
-            self.const = attrs.get('const').value
+            self.const = attrs.get('const') #.value
         if attrs.get('raise'):
-            self.raisexx = attrs.get('raise').value
+            self.raisexx = attrs.get('raise') #.value
         if attrs.get('virt'):
-            self.virt = attrs.get('virt').value
+            self.virt = attrs.get('virt') #.value
         if attrs.get('readable'):
-            self.readable = attrs.get('readable').value
+            self.readable = attrs.get('readable') #.value
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('explicit'):
-            self.explicit = attrs.get('explicit').value
+            self.explicit = attrs.get('explicit') #.value
         if attrs.get('new'):
-            self.new = attrs.get('new').value
+            self.new = attrs.get('new') #.value
         if attrs.get('final'):
-            self.final = attrs.get('final').value
+            self.final = attrs.get('final') #.value
         if attrs.get('writable'):
-            self.writable = attrs.get('writable').value
+            self.writable = attrs.get('writable') #.value
         if attrs.get('add'):
-            self.add = attrs.get('add').value
+            self.add = attrs.get('add') #.value
         if attrs.get('static'):
-            self.static = attrs.get('static').value
+            self.static = attrs.get('static') #.value
         if attrs.get('remove'):
-            self.remove = attrs.get('remove').value
+            self.remove = attrs.get('remove') #.value
         if attrs.get('sealed'):
-            self.sealed = attrs.get('sealed').value
+            self.sealed = attrs.get('sealed') #.value
         if attrs.get('mutable'):
-            self.mutable = attrs.get('mutable').value
+            self.mutable = attrs.get('mutable') #.value
         if attrs.get('gettable'):
-            self.gettable = attrs.get('gettable').value
+            self.gettable = attrs.get('gettable') #.value
         if attrs.get('inline'):
-            self.inline = attrs.get('inline').value
+            self.inline = attrs.get('inline') #.value
         if attrs.get('settable'):
-            self.settable = attrs.get('settable').value
+            self.settable = attrs.get('settable') #.value
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'templateparamlist':
+        if        nodeName_ == 'templateparamlist':
             obj_ = templateparamlistType.factory()
             obj_.build(child_)
             self.set_templateparamlist(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'type':
+        elif        nodeName_ == 'type':
             obj_ = linkedTextType.factory()
             obj_.build(child_)
             self.set_type(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'definition':
+        elif        nodeName_ == 'definition':
             definition_ = ''
-            for text__content_ in child_.childNodes:
-                definition_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                definition_ += text__content_.text
             self.definition = definition_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'argsstring':
+        elif        nodeName_ == 'argsstring':
             argsstring_ = ''
-            for text__content_ in child_.childNodes:
-                argsstring_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                argsstring_ += text__content_.text
             self.argsstring = argsstring_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
+        elif        nodeName_ == 'name':
             name_ = ''
-            for text__content_ in child_.childNodes:
-                name_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                name_ += text__content_.text
             self.name = name_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'read':
+        elif        nodeName_ == 'read':
             read_ = ''
-            for text__content_ in child_.childNodes:
-                read_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                read_ += text__content_.text
             self.read = read_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'write':
+        elif        nodeName_ == 'write':
             write_ = ''
-            for text__content_ in child_.childNodes:
-                write_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                write_ += text__content_.text
             self.write = write_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'bitfield':
+        elif        nodeName_ == 'bitfield':
             bitfield_ = ''
-            for text__content_ in child_.childNodes:
-                bitfield_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                bitfield_ += text__content_.text
             self.bitfield = bitfield_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'reimplements':
+        elif        nodeName_ == 'reimplements':
             obj_ = reimplementType.factory()
             obj_.build(child_)
             self.reimplements.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'reimplementedby':
+        elif        nodeName_ == 'reimplementedby':
             obj_ = reimplementType.factory()
             obj_.build(child_)
             self.reimplementedby.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'param':
+        elif        nodeName_ == 'param':
             obj_ = paramType.factory()
             obj_.build(child_)
             self.param.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'enumvalue':
+        elif        nodeName_ == 'enumvalue':
             obj_ = enumvalueType.factory()
             obj_.build(child_)
             self.enumvalue.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'initializer':
+        elif        nodeName_ == 'initializer':
             obj_ = linkedTextType.factory()
             obj_.build(child_)
             self.set_initializer(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'exceptions':
+        elif        nodeName_ == 'exceptions':
             obj_ = linkedTextType.factory()
             obj_.build(child_)
             self.set_exceptions(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'briefdescription':
+        elif        nodeName_ == 'briefdescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_briefdescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'detaileddescription':
+        elif        nodeName_ == 'detaileddescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_detaileddescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'inbodydescription':
+        elif        nodeName_ == 'inbodydescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_inbodydescription(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'location':
+        elif        nodeName_ == 'location':
             obj_ = locationType.factory()
             obj_.build(child_)
             self.set_location(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'references':
+        elif        nodeName_ == 'references':
             obj_ = referenceType.factory()
             obj_.build(child_)
             self.references.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'referencedby':
+        elif        nodeName_ == 'referencedby':
             obj_ = referenceType.factory()
             obj_.build(child_)
             self.referencedby.append(obj_)
@@ -1405,19 +1364,20 @@ class definition(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class definition
 
 
@@ -1453,19 +1413,20 @@ class argsstring(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class argsstring
 
 
@@ -1490,19 +1451,20 @@ class read(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class read
 
 
@@ -1527,19 +1489,20 @@ class write(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class write
 
 
@@ -1564,19 +1527,20 @@ class bitfield(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class bitfield
 
 
@@ -1621,37 +1585,33 @@ class descriptionType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             childobj_ = docTitleType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'title', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect1':
+        elif        nodeName_ == 'sect1':
             childobj_ = docSect1Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect1', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             childobj_ = docInternalType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
@@ -1703,50 +1663,46 @@ class enumvalueType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('prot'):
-            self.prot = attrs.get('prot').value
+            self.prot = attrs.get('prot') #.value
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'name':
+        if        nodeName_ == 'name':
             value_ = []
-            for text_ in child_.childNodes:
-                value_.append(text_.nodeValue)
+            for text_ in child_: #.childNodes:
+                value_.append(text_.text)
             valuestr_ = ''.join(value_)
             obj_ = self.mixedclass_(MixedContainer.CategorySimple,
                 MixedContainer.TypeString, 'name', valuestr_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'initializer':
+        elif        nodeName_ == 'initializer':
             childobj_ = linkedTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'initializer', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'briefdescription':
+        elif        nodeName_ == 'briefdescription':
             childobj_ = descriptionType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'briefdescription', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'detaileddescription':
+        elif        nodeName_ == 'detaileddescription':
             childobj_ = descriptionType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'detaileddescription', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class enumvalueType
 
@@ -1777,16 +1733,15 @@ class templateparamlistType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'param':
+        if        nodeName_ == 'param':
             obj_ = paramType.factory()
             obj_.build(child_)
             self.param.append(obj_)
@@ -1834,44 +1789,38 @@ class paramType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'type':
+        if        nodeName_ == 'type':
             obj_ = linkedTextType.factory()
             obj_.build(child_)
             self.set_type(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'declname':
+        elif        nodeName_ == 'declname':
             declname_ = ''
-            for text__content_ in child_.childNodes:
-                declname_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                declname_ += text__content_.text
             self.declname = declname_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'defname':
+        elif        nodeName_ == 'defname':
             defname_ = ''
-            for text__content_ in child_.childNodes:
-                defname_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                defname_ += text__content_.text
             self.defname = defname_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'array':
+        elif        nodeName_ == 'array':
             array_ = ''
-            for text__content_ in child_.childNodes:
-                array_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                array_ += text__content_.text
             self.array = array_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'defval':
+        elif        nodeName_ == 'defval':
             obj_ = linkedTextType.factory()
             obj_.build(child_)
             self.set_defval(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'briefdescription':
+        elif        nodeName_ == 'briefdescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_briefdescription(obj_)
@@ -1899,19 +1848,20 @@ class declname(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class declname
 
 
@@ -1936,19 +1886,20 @@ class defname(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class defname
 
 
@@ -1973,19 +1924,20 @@ class array(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class array
 
 
@@ -2019,24 +1971,23 @@ class linkedTextType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ref':
+        if        nodeName_ == 'ref':
             childobj_ = docRefTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'ref', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #ag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class linkedTextType
 
@@ -2067,23 +2018,22 @@ class graphType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #.childNodes:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'node':
-            obj_ = nodeType.factory()
+        if        nodeName_ == 'node':
+            obj_ = tag.factory()
             obj_.build(child_)
             self.node.append(obj_)
 # end class graphType
 
 
-class nodeType(GeneratedsSuper):
+class tag(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, id=None, label=None, link=None, childnode=None):
@@ -2095,10 +2045,10 @@ class nodeType(GeneratedsSuper):
         else:
             self.childnode = childnode
     def factory(*args_, **kwargs_):
-        if nodeType.subclass:
-            return nodeType.subclass(*args_, **kwargs_)
+        if tag.subclass:
+            return tag.subclass(*args_, **kwargs_)
         else:
-            return nodeType(*args_, **kwargs_)
+            return tag(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_label(self): return self.label
     def set_label(self, label): self.label = label
@@ -2120,32 +2070,29 @@ class nodeType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'label':
+        if        nodeName_ == 'label':
             label_ = ''
-            for text__content_ in child_.childNodes:
-                label_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                label_ += text__content_.text
             self.label = label_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'link':
+        elif        nodeName_ == 'link':
             obj_ = linkType.factory()
             obj_.build(child_)
             self.set_link(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'childnode':
-            obj_ = childnodeType.factory()
+        elif        nodeName_ == 'childnode':
+            obj_ = childtag.factory()
             obj_.build(child_)
             self.childnode.append(obj_)
-# end class nodeType
+# end class tag
 
 
 class label(GeneratedsSuper):
@@ -2169,23 +2116,24 @@ class label(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class label
 
 
-class childnodeType(GeneratedsSuper):
+class childtag(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, relation=None, refid=None, edgelabel=None):
@@ -2196,10 +2144,10 @@ class childnodeType(GeneratedsSuper):
         else:
             self.edgelabel = edgelabel
     def factory(*args_, **kwargs_):
-        if childnodeType.subclass:
-            return childnodeType.subclass(*args_, **kwargs_)
+        if childtag.subclass:
+            return childtag.subclass(*args_, **kwargs_)
         else:
-            return childnodeType(*args_, **kwargs_)
+            return childtag(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_edgelabel(self): return self.edgelabel
     def set_edgelabel(self, edgelabel): self.edgelabel = edgelabel
@@ -2209,10 +2157,10 @@ class childnodeType(GeneratedsSuper):
     def set_relation(self, relation): self.relation = relation
     def get_refid(self): return self.refid
     def set_refid(self, refid): self.refid = refid
-    def export(self, outfile, level, namespace_='', name_='childnodeType', namespacedef_=''):
+    def export(self, outfile, level, namespace_='', name_='childtag', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s %s' % (namespace_, name_, namespacedef_, ))
-        self.exportAttributes(outfile, level, namespace_, name_='childnodeType')
+        self.exportAttributes(outfile, level, namespace_, name_='childtag')
         if self.hasContent_():
             outfile.write('>\n')
             self.exportChildren(outfile, level + 1, namespace_, name_)
@@ -2220,12 +2168,12 @@ class childnodeType(GeneratedsSuper):
             outfile.write('</%s%s>\n' % (namespace_, name_))
         else:
             outfile.write(' />\n')
-    def exportAttributes(self, outfile, level, namespace_='', name_='childnodeType'):
+    def exportAttributes(self, outfile, level, namespace_='', name_='childtag'):
         if self.relation is not None:
             outfile.write(' relation=%s' % (quote_attrib(self.relation), ))
         if self.refid is not None:
             outfile.write(' refid=%s' % (self.format_string(quote_attrib(self.refid).encode(ExternalEncoding), input_name='refid'), ))
-    def exportChildren(self, outfile, level, namespace_='', name_='childnodeType'):
+    def exportChildren(self, outfile, level, namespace_='', name_='childtag'):
         for edgelabel_ in self.edgelabel:
             showIndent(outfile, level)
             outfile.write('<%sedgelabel>%s</%sedgelabel>\n' % (namespace_, self.format_string(quote_xml(edgelabel_).encode(ExternalEncoding), input_name='edgelabel'), namespace_))
@@ -2237,24 +2185,23 @@ class childnodeType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('relation'):
-            self.relation = attrs.get('relation').value
+            self.relation = attrs.get('relation') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'edgelabel':
+        if        nodeName_ == 'edgelabel':
             edgelabel_ = ''
-            for text__content_ in child_.childNodes:
-                edgelabel_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                edgelabel_ += text__content_.text
             self.edgelabel.append(edgelabel_)
-# end class childnodeType
+# end class childtag
 
 
 class edgelabel(GeneratedsSuper):
@@ -2299,19 +2246,20 @@ class edgelabel(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class edgelabel
 
 
@@ -2366,22 +2314,23 @@ class linkType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
         if attrs.get('external'):
-            self.external = attrs.get('external').value
+            self.external = attrs.get('external') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class linkType
 
 
@@ -2427,16 +2376,15 @@ class listingType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'codeline':
+        if        nodeName_ == 'codeline':
             obj_ = codelineType.factory()
             obj_.build(child_)
             self.codeline.append(obj_)
@@ -2504,26 +2452,25 @@ class codelineType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('external'):
-            self.external = attrs.get('external').value
+            self.external = attrs.get('external') #.value
         if attrs.get('lineno'):
             try:
-                self.lineno = int(attrs.get('lineno').value)
+                self.lineno = int(attrs.get('lineno')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (lineno): %s' % exp)
         if attrs.get('refkind'):
-            self.refkind = attrs.get('refkind').value
+            self.refkind = attrs.get('refkind') #.value
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'highlight':
+        if        nodeName_ == 'highlight':
             obj_ = highlightType.factory()
             obj_.build(child_)
             self.highlight.append(obj_)
@@ -2581,36 +2528,34 @@ class highlightType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('class'):
-            self.classxx = attrs.get('class').value
+            self.classxx = attrs.get('class') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sp':
+        if        nodeName_ == 'sp':
             value_ = []
-            for text_ in child_.childNodes:
-                value_.append(text_.nodeValue)
+            for text_ in child_: #.childNodes:
+                value_.append(text_.text)
             # We make this unicode so that our unicode renderer catch-all picks it up
             # otherwise it would go through as 'str' and we'd have to pick it up too
             valuestr_ = u' '
             obj_ = self.mixedclass_(MixedContainer.CategorySimple,
                 MixedContainer.TypeString, 'sp', valuestr_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ref':
+        elif        nodeName_ == 'ref':
             childobj_ = docRefTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'ref', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class highlightType
 
@@ -2657,19 +2602,20 @@ class sp(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class sp
 
 
@@ -2737,36 +2683,37 @@ class referenceType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('endline'):
             try:
-                self.endline = int(attrs.get('endline').value)
+                self.endline = int(attrs.get('endline')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (endline): %s' % exp)
         if attrs.get('startline'):
             try:
-                self.startline = int(attrs.get('startline').value)
+                self.startline = int(attrs.get('startline')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (startline): %s' % exp)
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
         if attrs.get('compoundref'):
-            self.compoundref = attrs.get('compoundref').value
+            self.compoundref = attrs.get('compoundref') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class referenceType
 
 
@@ -2836,37 +2783,38 @@ class locationType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('bodystart'):
             try:
-                self.bodystart = int(attrs.get('bodystart').value)
+                self.bodystart = int(attrs.get('bodystart')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (bodystart): %s' % exp)
         if attrs.get('line'):
             try:
-                self.line = int(attrs.get('line').value)
+                self.line = int(attrs.get('line')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (line): %s' % exp)
         if attrs.get('bodyend'):
             try:
-                self.bodyend = int(attrs.get('bodyend').value)
+                self.bodyend = int(attrs.get('bodyend')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (bodyend): %s' % exp)
         if attrs.get('bodyfile'):
-            self.bodyfile = attrs.get('bodyfile').value
+            self.bodyfile = attrs.get('bodyfile') #.value
         if attrs.get('file'):
-            self.file = attrs.get('file').value
+            self.file = attrs.get('file') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class locationType
 
 
@@ -2927,46 +2875,42 @@ class docSect1Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             childobj_ = docTitleType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'title', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect2':
+        elif        nodeName_ == 'sect2':
             childobj_ = docSect2Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect2', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             childobj_ = docInternalS1Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'internal', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docSect1Type
 
@@ -3028,46 +2972,42 @@ class docSect2Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             childobj_ = docTitleType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'title', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect3':
+        elif        nodeName_ == 'sect3':
             childobj_ = docSect3Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect3', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             childobj_ = docInternalS2Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'internal', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docSect2Type
 
@@ -3129,46 +3069,42 @@ class docSect3Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             childobj_ = docTitleType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'title', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect4':
+        elif        nodeName_ == 'sect4':
             childobj_ = docSect4Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect4', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             childobj_ = docInternalS3Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'internal', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docSect3Type
 
@@ -3225,39 +3161,36 @@ class docSect4Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             childobj_ = docTitleType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'title', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             childobj_ = docInternalS4Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'internal', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docSect4Type
 
@@ -3309,31 +3242,29 @@ class docInternalType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect1':
+        elif        nodeName_ == 'sect1':
             childobj_ = docSect1Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect1', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docInternalType
 
@@ -3385,31 +3316,29 @@ class docInternalS1Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect2':
+        elif        nodeName_ == 'sect2':
             childobj_ = docSect2Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect2', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docInternalS1Type
 
@@ -3461,31 +3390,29 @@ class docInternalS2Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect3':
+        elif        nodeName_ == 'sect3':
             childobj_ = docSect3Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect3', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docInternalS2Type
 
@@ -3537,31 +3464,29 @@ class docInternalS3Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect3':
+        elif        nodeName_ == 'sect3':
             childobj_ = docSect4Type.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'sect3', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docInternalS3Type
 
@@ -3608,24 +3533,23 @@ class docInternalS4Type(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             childobj_ = docParaType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'para', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docInternalS4Type
 
@@ -3675,23 +3599,24 @@ class docTitleType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docTitleType
 
 
@@ -3740,23 +3665,24 @@ class docParaType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docParaType
 
 
@@ -3805,23 +3731,24 @@ class docMarkupType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docMarkupType
 
 
@@ -3874,24 +3801,25 @@ class docURLLink(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('url'):
-            self.url = attrs.get('url').value
+            self.url = attrs.get('url') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docURLLink
 
 
@@ -3944,24 +3872,25 @@ class docAnchorType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docAnchorType
 
 
@@ -4014,24 +3943,25 @@ class docFormulaType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docFormulaType
 
 
@@ -4080,25 +4010,23 @@ class docIndexEntryType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'primaryie':
+        if        nodeName_ == 'primaryie':
             primaryie_ = ''
-            for text__content_ in child_.childNodes:
-                primaryie_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                primaryie_ += text__content_.text
             self.primaryie = primaryie_
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'secondaryie':
+        elif        nodeName_ == 'secondaryie':
             secondaryie_ = ''
-            for text__content_ in child_.childNodes:
-                secondaryie_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                secondaryie_ += text__content_.text
             self.secondaryie = secondaryie_
 # end class docIndexEntryType
 
@@ -4145,16 +4073,15 @@ class docListType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'listitem':
+        if        nodeName_ == 'listitem':
             obj_ = docListItemType.factory()
             obj_.build(child_)
             self.listitem.append(obj_)
@@ -4203,16 +4130,15 @@ class docListItemType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             obj_ = docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
@@ -4271,22 +4197,20 @@ class docSimpleSectType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'title':
+        if        nodeName_ == 'title':
             obj_ = docTitleType.factory()
             obj_.build(child_)
             self.set_title(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        elif        nodeName_ == 'para':
             obj_ = docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
@@ -4330,16 +4254,15 @@ class docVarListEntryType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'term':
+        if        nodeName_ == 'term':
             obj_ = docTitleType.factory()
             obj_.build(child_)
             self.set_term(obj_)
@@ -4388,19 +4311,20 @@ class docVariableListType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docVariableListType
 
 
@@ -4463,28 +4387,29 @@ class docRefTextType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('refid'):
-            self.refid = attrs.get('refid').value
+            self.refid = attrs.get('refid') #.value
         if attrs.get('kindref'):
-            self.kindref = attrs.get('kindref').value
+            self.kindref = attrs.get('kindref') #.value
         if attrs.get('external'):
-            self.external = attrs.get('external').value
+            self.external = attrs.get('external') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docRefTextType
 
 
@@ -4545,30 +4470,28 @@ class docTableType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('rows'):
             try:
-                self.rows = int(attrs.get('rows').value)
+                self.rows = int(attrs.get('rows')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (rows): %s' % exp)
         if attrs.get('cols'):
             try:
-                self.cols = int(attrs.get('cols').value)
+                self.cols = int(attrs.get('cols')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (cols): %s' % exp)
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'row':
+        if        nodeName_ == 'row':
             obj_ = docRowType.factory()
             obj_.build(child_)
             self.row.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'caption':
+        elif        nodeName_ == 'caption':
             obj_ = docCaptionType.factory()
             obj_.build(child_)
             self.set_caption(obj_)
@@ -4617,16 +4540,15 @@ class docRowType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'entry':
+        if        nodeName_ == 'entry':
             obj_ = docEntryType.factory()
             obj_.build(child_)
             self.entry.append(obj_)
@@ -4679,17 +4601,16 @@ class docEntryType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('thead'):
-            self.thead = attrs.get('thead').value
+            self.thead = attrs.get('thead') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             obj_ = docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
@@ -4741,23 +4662,24 @@ class docCaptionType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docCaptionType
 
 
@@ -4810,27 +4732,28 @@ class docHeadingType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('level'):
             try:
-                self.level = int(attrs.get('level').value)
+                self.level = int(attrs.get('level')) #.value)
             except ValueError as exp:
                 raise ValueError('Bad integer attribute (level): %s' % exp)
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docHeadingType
 
 
@@ -4898,30 +4821,31 @@ class docImageType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('width'):
-            self.width = attrs.get('width').value
+            self.width = attrs.get('width') #.value
         if attrs.get('type'):
-            self.type_ = attrs.get('type').value
+            self.type_ = attrs.get('type') #.value
         if attrs.get('name'):
-            self.name = attrs.get('name').value
+            self.name = attrs.get('name') #.value
         if attrs.get('height'):
-            self.height = attrs.get('height').value
+            self.height = attrs.get('height') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docImageType
 
 
@@ -4974,24 +4898,25 @@ class docDotFileType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('name'):
-            self.name = attrs.get('name').value
+            self.name = attrs.get('name') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docDotFileType
 
 
@@ -5044,24 +4969,25 @@ class docTocItemType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
+        if child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docTocItemType
 
 
@@ -5107,16 +5033,15 @@ class docTocListType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'tocitem':
+        if        nodeName_ == 'tocitem':
             obj_ = docTocItemType.factory()
             obj_.build(child_)
             self.tocitem.append(obj_)
@@ -5169,17 +5094,16 @@ class docLanguageType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('langid'):
-            self.langid = attrs.get('langid').value
+            self.langid = attrs.get('langid') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             obj_ = docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
@@ -5232,17 +5156,16 @@ class docParamListType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('kind'):
-            self.kind = attrs.get('kind').value
+            self.kind = attrs.get('kind') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'parameteritem':
+        if        nodeName_ == 'parameteritem':
             obj_ = docParamListItem.factory()
             obj_.build(child_)
             self.parameteritem.append(obj_)
@@ -5297,21 +5220,19 @@ class docParamListItem(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'parameternamelist':
+        if        nodeName_ == 'parameternamelist':
             obj_ = docParamNameList.factory()
             obj_.build(child_)
             self.parameternamelist.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'parameterdescription':
+        elif        nodeName_ == 'parameterdescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_parameterdescription(obj_)
@@ -5360,16 +5281,15 @@ class docParamNameList(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'parametername':
+        if        nodeName_ == 'parametername':
             obj_ = docParamName.factory()
             obj_.build(child_)
             self.parametername.append(obj_)
@@ -5420,25 +5340,24 @@ class docParamName(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('direction'):
-            self.direction = attrs.get('direction').value
+            self.direction = attrs.get('direction') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'ref':
+        if        nodeName_ == 'ref':
             childobj_ = docRefTextType.factory()
             childobj_.build(child_)
             obj_ = self.mixedclass_(MixedContainer.CategoryComplex,
                 MixedContainer.TypeNone, 'ref', childobj_)
             self.content_.append(obj_)
-        elif child_.nodeType == Node.TEXT_NODE:
+        elif child_.text: #tag == Node.TEXT_NODE:
             obj_ = self.mixedclass_(MixedContainer.CategoryText,
-                MixedContainer.TypeNone, '', child_.nodeValue)
+                MixedContainer.TypeNone, '', child_.text)
             self.content_.append(obj_)
 # end class docParamName
 
@@ -5496,23 +5415,21 @@ class docXRefSectType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('id'):
-            self.id = attrs.get('id').value
+            self.id = attrs.get('id') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xreftitle':
+        if nodeName_ == 'xreftitle':
             xreftitle_ = ''
-            for text__content_ in child_.childNodes:
-                xreftitle_ += text__content_.nodeValue
+            for text__content_ in child_: #.childNodes:
+                xreftitle_ += text__content_.text
             self.xreftitle.append(xreftitle_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'xrefdescription':
+        elif        nodeName_ == 'xrefdescription':
             obj_ = descriptionType.factory()
             obj_.build(child_)
             self.set_xrefdescription(obj_)
@@ -5582,27 +5499,24 @@ class docCopyType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('link'):
-            self.link = attrs.get('link').value
+            self.link = attrs.get('link') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'para':
+        if        nodeName_ == 'para':
             obj_ = docParaType.factory()
             obj_.build(child_)
             self.para.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'sect1':
+        elif        nodeName_ == 'sect1':
             obj_ = docSect1Type.factory()
             obj_.build(child_)
             self.sect1.append(obj_)
-        elif child_.nodeType == Node.ELEMENT_NODE and \
-            nodeName_ == 'internal':
+        elif        nodeName_ == 'internal':
             obj_ = docInternalType.factory()
             obj_.build(child_)
             self.set_internal(obj_)
@@ -5655,20 +5569,21 @@ class docCharType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         if attrs.get('char'):
-            self.char = attrs.get('char').value
+            self.char = attrs.get('char') #.value
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docCharType
 
 
@@ -5714,19 +5629,20 @@ class docEmptyType(GeneratedsSuper):
         else:
             return False
     def build(self, node_):
-        attrs = node_.attributes
+        attrs = node_.attrib
         self.buildAttributes(attrs)
         self.valueOf_ = ''
-        for child_ in node_.childNodes:
-            nodeName_ = child_.nodeName.split(':')[-1]
+        for child_ in node_: #:
+            nodeName_ = child_.tag.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
         pass
     def buildChildren(self, child_, nodeName_):
-        if child_.nodeType == Node.TEXT_NODE:
-            self.valueOf_ += child_.nodeValue
-        elif child_.nodeType == Node.CDATA_SECTION_NODE:
-            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
+        if child_.text: #ag == Node.TEXT_NODE:
+            self.valueOf_ += child_.text #nodeValue
+        elif child_.tail: #tag == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.tail+']]'
+            #'![CDATA['+child_.nodeValue+']]'
 # end class docEmptyType
 
 
@@ -5742,8 +5658,10 @@ def usage():
 
 
 def parse(inFileName):
-    doc = minidom.parse(inFileName)
-    rootNode = doc.documentElement
+    #doc = minidom.parse(inFileName)
+    doc = ET.parse(inFileName)
+    #rootNode = doc.documentElement
+    rootNode = doc.find("doxygen")
     rootObj = DoxygenType.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -5768,8 +5686,10 @@ def parseString(inString):
 
 
 def parseLiteral(inFileName):
-    doc = minidom.parse(inFileName)
-    rootNode = doc.documentElement
+    #doc = minidom.parse(inFileName)
+    doc = ET.parse(inFileName)
+    #rootNode = doc.documentElement
+    rootNode = doc.find("doxygen")
     rootObj = DoxygenType.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
