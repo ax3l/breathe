@@ -560,6 +560,9 @@ def raise_parse_error(node, msg):
 
 
 class MixedContainer:
+
+    node_type = "mixedcontainer"
+
     # Constants for category:
     CategoryNone = 0
     CategoryText = 1
@@ -719,6 +722,8 @@ def _cast(typ, value):
 
 
 class DoxygenType(GeneratedsSuper):
+    node_type = "doxygendef"
+
     subclass = None
     superclass = None
     def __init__(self, version=None, compounddef=None):
@@ -815,6 +820,8 @@ class DoxygenType(GeneratedsSuper):
 
 
 class compounddefType(GeneratedsSuper):
+    node_type = "compounddef"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, kind=None, language=None, prot=None, final=None, sealed=None, abstract=None, compoundname=None, title=None, basecompoundref=None, derivedcompoundref=None, includes=None, includedby=None, incdepgraph=None, invincdepgraph=None, innerdir=None, innerfile=None, innerclass=None, innernamespace=None, innerpage=None, innergroup=None, templateparamlist=None, sectiondef=None, briefdescription=None, detaileddescription=None, inheritancegraph=None, collaborationgraph=None, programlisting=None, location=None, listofallmembers=None):
@@ -1319,6 +1326,8 @@ class compounddefType(GeneratedsSuper):
 
 
 class listofallmembersType(GeneratedsSuper):
+    node_type = "listofallmembers"
+
     subclass = None
     superclass = None
     def __init__(self, member=None):
@@ -1399,6 +1408,8 @@ class listofallmembersType(GeneratedsSuper):
 
 
 class memberRefType(GeneratedsSuper):
+    node_type = "memberref"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, prot=None, virt=None, ambiguityscope=None, scope=None, name=None):
@@ -1670,6 +1681,8 @@ class name(GeneratedsSuper):
 
 
 class compoundRefType(GeneratedsSuper):
+    node_type = "compoundref"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, prot=None, virt=None, valueOf_=None):
@@ -1790,6 +1803,8 @@ class compoundRefType(GeneratedsSuper):
 
 
 class reimplementType(GeneratedsSuper):
+    node_type = "reimplement"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, valueOf_=None):
@@ -1864,6 +1879,8 @@ class reimplementType(GeneratedsSuper):
 
 
 class incType(GeneratedsSuper):
+    node_type = "inc"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, local=None, valueOf_=None):
@@ -1961,6 +1978,8 @@ class incType(GeneratedsSuper):
 
 
 class refType(GeneratedsSuper):
+    node_type = "ref"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, prot=None, valueOf_=None):
@@ -2058,6 +2077,8 @@ class refType(GeneratedsSuper):
 
 
 class refTextType(GeneratedsSuper):
+    node_type = "reftex"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, kindref=None, external=None, tooltip=None, valueOf_=None):
@@ -2175,6 +2196,8 @@ class refTextType(GeneratedsSuper):
 
 
 class sectiondefType(GeneratedsSuper):
+    node_type = "sectiondef"
+
     subclass = None
     superclass = None
     def __init__(self, kind=None, header=None, description=None, memberdef=None):
@@ -2298,6 +2321,8 @@ class sectiondefType(GeneratedsSuper):
 
 
 class memberdefType(GeneratedsSuper):
+    node_type = "memberdef"
+
     subclass = None
     superclass = None
     def __init__(self, kind=None, id=None, prot=None, static=None, const=None, explicit=None, inline=None, refqual=None, virt=None, volatile=None, mutable=None, readable=None, writable=None, initonly=None, settable=None, gettable=None, final=None, sealed=None, new=None, add=None, remove=None, raise_=None, optional=None, required=None, accessor=None, attribute=None, property=None, readonly=None, bound=None, removable=None, contrained=None, transient=None, maybevoid=None, maybedefault=None, maybeambiguous=None, templateparamlist=None, type_=None, definition=None, argsstring=None, name=None, read=None, write=None, bitfield=None, reimplements=None, reimplementedby=None, param=None, enumvalue=None, initializer=None, exceptions=None, briefdescription=None, detaileddescription=None, inbodydescription=None, location=None, references=None, referencedby=None):
@@ -3376,6 +3401,8 @@ class bitfield(GeneratedsSuper):
 
 
 class descriptionType(GeneratedsSuper):
+    node_type = "description"
+
     subclass = None
     superclass = None
     def __init__(self, title=None, para=None, sect1=None, internal=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -3536,6 +3563,8 @@ class descriptionType(GeneratedsSuper):
 
 
 class enumvalueType(GeneratedsSuper):
+    node_type = "enumvalue"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, prot=None, name=None, initializer=None, briefdescription=None, detaileddescription=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -3715,6 +3744,8 @@ class enumvalueType(GeneratedsSuper):
 
 
 class templateparamlistType(GeneratedsSuper):
+    node_type = "templateparamlist"
+
     subclass = None
     superclass = None
     def __init__(self, param=None):
@@ -3795,6 +3826,8 @@ class templateparamlistType(GeneratedsSuper):
 
 
 class paramType(GeneratedsSuper):
+    node_type = "param"
+
     subclass = None
     superclass = None
     def __init__(self, type_=None, declname=None, defname=None, array=None, defval=None, typeconstraint=None, briefdescription=None):
@@ -4118,6 +4151,8 @@ class array(GeneratedsSuper):
 
 
 class linkedTextType(GeneratedsSuper):
+    node_type = "linkedtext"
+
     subclass = None
     superclass = None
     def __init__(self, ref=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -4228,6 +4263,8 @@ class linkedTextType(GeneratedsSuper):
 
 
 class graphType(GeneratedsSuper):
+    node_type = "graph"
+
     subclass = None
     superclass = None
     def __init__(self, node=None):
@@ -4308,6 +4345,8 @@ class graphType(GeneratedsSuper):
 
 
 class nodeType(GeneratedsSuper):
+    node_type = "node"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, label=None, link=None, childnode=None):
@@ -4479,6 +4518,8 @@ class label(GeneratedsSuper):
 
 
 class childnodeType(GeneratedsSuper):
+    node_type = "childnode"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, relation=None, edgelabel=None):
@@ -4651,6 +4692,8 @@ class edgelabel(GeneratedsSuper):
 
 
 class linkType(GeneratedsSuper):
+    node_type = "link"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, external=None):
@@ -4730,6 +4773,8 @@ class linkType(GeneratedsSuper):
 
 
 class listingType(GeneratedsSuper):
+    node_type = "listing"
+
     subclass = None
     superclass = None
     def __init__(self, codeline=None):
@@ -4810,6 +4855,8 @@ class listingType(GeneratedsSuper):
 
 
 class codelineType(GeneratedsSuper):
+    node_type = "codeline"
+
     subclass = None
     superclass = None
     def __init__(self, lineno=None, refid=None, refkind=None, external=None, highlight=None):
@@ -4957,6 +5004,8 @@ class codelineType(GeneratedsSuper):
 
 
 class highlightType(GeneratedsSuper):
+    node_type = "highlight"
+
     subclass = None
     superclass = None
     def __init__(self, class_=None, sp=None, ref=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -5167,6 +5216,8 @@ class sp(GeneratedsSuper):
 
 
 class referenceType(GeneratedsSuper):
+    node_type = "reference"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, compoundref=None, startline=None, endline=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -5291,6 +5342,8 @@ class referenceType(GeneratedsSuper):
 
 
 class locationType(GeneratedsSuper):
+    node_type = "location"
+
     subclass = None
     superclass = None
     def __init__(self, file=None, line=None, column=None, bodyfile=None, bodystart=None, bodyend=None):
@@ -5422,6 +5475,8 @@ class locationType(GeneratedsSuper):
 
 
 class docSect1Type(GeneratedsSuper):
+    node_type = "docsect1"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, title=None, para=None, sect2=None, internal=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -5590,6 +5645,8 @@ class docSect1Type(GeneratedsSuper):
 
 
 class docSect2Type(GeneratedsSuper):
+    node_type = "docsect2"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, title=None, para=None, sect3=None, internal=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -5758,6 +5815,8 @@ class docSect2Type(GeneratedsSuper):
 
 
 class docSect3Type(GeneratedsSuper):
+    node_type = "docsect3"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, title=None, para=None, sect4=None, internal=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -5926,6 +5985,8 @@ class docSect3Type(GeneratedsSuper):
 
 
 class docSect4Type(GeneratedsSuper):
+    node_type = "docsect4"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, title=None, para=None, internal=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6072,6 +6133,8 @@ class docSect4Type(GeneratedsSuper):
 
 
 class docInternalType(GeneratedsSuper):
+    node_type = "docinternal"
+
     subclass = None
     superclass = None
     def __init__(self, para=None, sect1=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6204,6 +6267,8 @@ class docInternalType(GeneratedsSuper):
 
 
 class docInternalS1Type(GeneratedsSuper):
+    node_type = "docinternals1"
+
     subclass = None
     superclass = None
     def __init__(self, para=None, sect2=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6336,6 +6401,8 @@ class docInternalS1Type(GeneratedsSuper):
 
 
 class docInternalS2Type(GeneratedsSuper):
+    node_type = "docinternals2"
+
     subclass = None
     superclass = None
     def __init__(self, para=None, sect3=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6468,6 +6535,8 @@ class docInternalS2Type(GeneratedsSuper):
 
 
 class docInternalS3Type(GeneratedsSuper):
+    node_type = "docinternals3"
+
     subclass = None
     superclass = None
     def __init__(self, para=None, sect3=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6600,6 +6669,8 @@ class docInternalS3Type(GeneratedsSuper):
 
 
 class docInternalS4Type(GeneratedsSuper):
+    node_type = "docinternals4"
+
     subclass = None
     superclass = None
     def __init__(self, para=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -6710,6 +6781,8 @@ class docInternalS4Type(GeneratedsSuper):
 
 
 class docTitleType(GeneratedsSuper):
+    node_type = "doctitle"
+
     subclass = None
     superclass = None
     def __init__(self, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -12644,6 +12717,8 @@ class docTitleType(GeneratedsSuper):
 
 
 class docParaType(GeneratedsSuper):
+    node_type = "docpara"
+
     subclass = None
     superclass = None
     def __init__(self, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, linebreak=None, hruler=None, preformatted=None, programlisting=None, verbatim=None, indexentry=None, orderedlist=None, itemizedlist=None, simplesect=None, title=None, variablelist=None, table=None, heading=None, image=None, dotfile=None, mscfile=None, diafile=None, toclist=None, language=None, parameterlist=None, xrefsect=None, copydoc=None, blockquote=None, parblock=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -19102,6 +19177,8 @@ class docParaType(GeneratedsSuper):
 
 
 class docMarkupType(GeneratedsSuper):
+    node_type = "docmarkup"
+
     subclass = None
     superclass = None
     def __init__(self, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, linebreak=None, hruler=None, preformatted=None, programlisting=None, verbatim=None, indexentry=None, orderedlist=None, itemizedlist=None, simplesect=None, title=None, variablelist=None, table=None, heading=None, image=None, dotfile=None, mscfile=None, diafile=None, toclist=None, language=None, parameterlist=None, xrefsect=None, copydoc=None, blockquote=None, parblock=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -25560,6 +25637,8 @@ class docMarkupType(GeneratedsSuper):
 
 
 class docURLLink(GeneratedsSuper):
+    node_type = "docurllink"
+
     subclass = None
     superclass = None
     def __init__(self, url=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -31502,6 +31581,8 @@ class docURLLink(GeneratedsSuper):
 
 
 class docAnchorType(GeneratedsSuper):
+    node_type = "docanchor"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -31590,6 +31671,8 @@ class docAnchorType(GeneratedsSuper):
 
 
 class docFormulaType(GeneratedsSuper):
+    node_type = "docformula"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -31678,6 +31761,8 @@ class docFormulaType(GeneratedsSuper):
 
 
 class docIndexEntryType(GeneratedsSuper):
+    node_type = "docindexentry"
+
     subclass = None
     superclass = None
     def __init__(self, primaryie=None, secondaryie=None):
@@ -31763,6 +31848,8 @@ class docIndexEntryType(GeneratedsSuper):
 
 
 class docListType(GeneratedsSuper):
+    node_type = "doclist"
+
     subclass = None
     superclass = None
     def __init__(self, listitem=None):
@@ -31843,6 +31930,8 @@ class docListType(GeneratedsSuper):
 
 
 class docListItemType(GeneratedsSuper):
+    node_type = "doclistitem"
+
     subclass = None
     superclass = None
     def __init__(self, para=None):
@@ -31923,6 +32012,8 @@ class docListItemType(GeneratedsSuper):
 
 
 class docSimpleSectType(GeneratedsSuper):
+    node_type = "docsimplesect"
+
     subclass = None
     superclass = None
     def __init__(self, kind=None, title=None, para=None):
@@ -32035,6 +32126,8 @@ class docSimpleSectType(GeneratedsSuper):
 
 
 class docVarListEntryType(GeneratedsSuper):
+    node_type = "docvarlistentry"
+
     subclass = None
     superclass = None
     def __init__(self, term=None):
@@ -32109,6 +32202,8 @@ class docVarListEntryType(GeneratedsSuper):
 
 
 class docVariableListType(GeneratedsSuper):
+    node_type = "docvarlist"
+
     subclass = None
     superclass = None
     def __init__(self, varlistentry=None, listitem=None):
@@ -32206,6 +32301,8 @@ class docVariableListType(GeneratedsSuper):
 
 
 class docRefTextType(GeneratedsSuper):
+    node_type = "docreftext"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, kindref=None, external=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -38181,6 +38278,8 @@ class docRefTextType(GeneratedsSuper):
 
 
 class docTableType(GeneratedsSuper):
+    node_type = "doctable"
+
     subclass = None
     superclass = None
     def __init__(self, rows=None, cols=None, row=None, caption=None):
@@ -38296,6 +38395,8 @@ class docTableType(GeneratedsSuper):
 
 
 class docRowType(GeneratedsSuper):
+    node_type = "docrow"
+
     subclass = None
     superclass = None
     def __init__(self, entry=None):
@@ -38376,6 +38477,8 @@ class docRowType(GeneratedsSuper):
 
 
 class docEntryType(GeneratedsSuper):
+    node_type = "docentry"
+
     subclass = None
     superclass = None
     def __init__(self, thead=None, para=None):
@@ -38477,6 +38580,8 @@ class docEntryType(GeneratedsSuper):
 
 
 class docCaptionType(GeneratedsSuper):
+    node_type = "doccaption"
+
     subclass = None
     superclass = None
     def __init__(self, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -44411,6 +44516,8 @@ class docCaptionType(GeneratedsSuper):
 
 
 class docHeadingType(GeneratedsSuper):
+    node_type = "docheading"
+
     subclass = None
     superclass = None
     def __init__(self, level=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -50356,6 +50463,8 @@ class docHeadingType(GeneratedsSuper):
 
 
 class docImageType(GeneratedsSuper):
+    node_type = "docimage"
+
     subclass = None
     superclass = None
     def __init__(self, type_=None, name=None, width=None, height=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -56341,6 +56450,8 @@ class docImageType(GeneratedsSuper):
 
 
 class docFileType(GeneratedsSuper):
+    node_type = "docfile"
+
     subclass = None
     superclass = None
     def __init__(self, name=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -62283,6 +62394,8 @@ class docFileType(GeneratedsSuper):
 
 
 class docTocItemType(GeneratedsSuper):
+    node_type = "doctocitem"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, ulink=None, bold=None, emphasis=None, computeroutput=None, subscript=None, superscript=None, center=None, small=None, htmlonly=None, manonly=None, xmlonly=None, rtfonly=None, latexonly=None, dot=None, plantuml=None, anchor=None, formula=None, ref=None, nonbreakablespace=None, iexcl=None, cent=None, pound=None, curren=None, yen=None, brvbar=None, sect=None, umlaut=None, copy=None, ordf=None, laquo=None, not_=None, shy=None, registered=None, macr=None, deg=None, plusmn=None, sup2=None, sup3=None, acute=None, micro=None, para=None, middot=None, cedil=None, sup1=None, ordm=None, raquo=None, frac14=None, frac12=None, frac34=None, iquest=None, Agrave=None, Aacute=None, Acirc=None, Atilde=None, Aumlaut=None, Aring=None, AElig=None, Ccedil=None, Egrave=None, Eacute=None, Ecirc=None, Eumlaut=None, Igrave=None, Iacute=None, Icirc=None, Iumlaut=None, ETH=None, Ntilde=None, Ograve=None, Oacute=None, Ocirc=None, Otilde=None, Oumlaut=None, times=None, Oslash=None, Ugrave=None, Uacute=None, Ucirc=None, Uumlaut=None, Yacute=None, THORN=None, szlig=None, agrave=None, aacute=None, acirc=None, atilde=None, aumlaut=None, aring=None, aelig=None, ccedil=None, egrave=None, eacute=None, ecirc=None, eumlaut=None, igrave=None, iacute=None, icirc=None, iumlaut=None, eth=None, ntilde=None, ograve=None, oacute=None, ocirc=None, otilde=None, oumlaut=None, divide=None, oslash=None, ugrave=None, uacute=None, ucirc=None, uumlaut=None, yacute=None, thorn=None, yumlaut=None, fnof=None, Alpha=None, Beta=None, Gamma=None, Delta=None, Epsilon=None, Zeta=None, Eta=None, Theta=None, Iota=None, Kappa=None, Lambda=None, Mu=None, Nu=None, Xi=None, Omicron=None, Pi=None, Rho=None, Sigma=None, Tau=None, Upsilon=None, Phi=None, Chi=None, Psi=None, Omega=None, alpha=None, beta=None, gamma=None, delta=None, epsilon=None, zeta=None, eta=None, theta=None, iota=None, kappa=None, lambda_=None, mu=None, nu=None, xi=None, omicron=None, pi=None, rho=None, sigmaf=None, sigma=None, tau=None, upsilon=None, phi=None, chi=None, psi=None, omega=None, thetasym=None, upsih=None, piv=None, bull=None, hellip=None, prime=None, Prime=None, oline=None, frasl=None, weierp=None, imaginary=None, real=None, trademark=None, alefsym=None, larr=None, uarr=None, rarr=None, darr=None, harr=None, crarr=None, lArr=None, uArr=None, rArr=None, dArr=None, hArr=None, forall=None, part=None, exist=None, empty=None, nabla=None, isin=None, notin=None, ni=None, prod=None, sum=None, minus=None, lowast=None, radic=None, prop=None, infin=None, ang=None, and_=None, or_=None, cap=None, cup=None, int=None, there4=None, sim=None, cong=None, asymp=None, ne=None, equiv=None, le=None, ge=None, sub=None, sup=None, nsub=None, sube=None, supe=None, oplus=None, otimes=None, perp=None, sdot=None, lceil=None, rceil=None, lfloor=None, rfloor=None, lang=None, rang=None, loz=None, spades=None, clubs=None, hearts=None, diams=None, OElig=None, oelig=None, Scaron=None, scaron=None, Yumlaut=None, circ=None, tilde=None, ensp=None, emsp=None, thinsp=None, zwnj=None, zwj=None, lrm=None, rlm=None, ndash=None, mdash=None, lsquo=None, rsquo=None, sbquo=None, ldquo=None, rdquo=None, bdquo=None, dagger=None, Dagger=None, permil=None, lsaquo=None, rsaquo=None, euro=None, tm=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -68225,6 +68338,8 @@ class docTocItemType(GeneratedsSuper):
 
 
 class docTocListType(GeneratedsSuper):
+    node_type = "doctoclist"
+
     subclass = None
     superclass = None
     def __init__(self, tocitem=None):
@@ -68305,6 +68420,8 @@ class docTocListType(GeneratedsSuper):
 
 
 class docLanguageType(GeneratedsSuper):
+    node_type = "doclanguage"
+
     subclass = None
     superclass = None
     def __init__(self, langid=None, para=None):
@@ -68393,6 +68510,8 @@ class docLanguageType(GeneratedsSuper):
 
 
 class docParamListType(GeneratedsSuper):
+    node_type = "docparamlist"
+
     subclass = None
     superclass = None
     def __init__(self, kind=None, parameteritem=None):
@@ -68494,6 +68613,8 @@ class docParamListType(GeneratedsSuper):
 
 
 class docParamListItem(GeneratedsSuper):
+    node_type = "docparamlistitem"
+
     subclass = None
     superclass = None
     def __init__(self, parameternamelist=None, parameterdescription=None):
@@ -68585,6 +68706,8 @@ class docParamListItem(GeneratedsSuper):
 
 
 class docParamNameList(GeneratedsSuper):
+    node_type = "docparamnamelist"
+
     subclass = None
     superclass = None
     def __init__(self, parametertype=None, parametername=None):
@@ -68682,6 +68805,8 @@ class docParamNameList(GeneratedsSuper):
 
 
 class docParamType(GeneratedsSuper):
+    node_type = "docparam"
+
     subclass = None
     superclass = None
     def __init__(self, ref=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -68786,6 +68911,8 @@ class docParamType(GeneratedsSuper):
 
 
 class docParamName(GeneratedsSuper):
+    node_type = "docparamname"
+
     subclass = None
     superclass = None
     def __init__(self, direction=None, ref=None, valueOf_=None, mixedclass_=None, content_=None):
@@ -68911,6 +69038,8 @@ class docParamName(GeneratedsSuper):
 
 
 class docXRefSectType(GeneratedsSuper):
+    node_type = "docxrefsect"
+
     subclass = None
     superclass = None
     def __init__(self, id=None, xreftitle=None, xrefdescription=None):
@@ -69010,6 +69139,8 @@ class docXRefSectType(GeneratedsSuper):
 
 
 class docCopyType(GeneratedsSuper):
+    node_type = "doccopy"
+
     subclass = None
     superclass = None
     def __init__(self, link=None, para=None, sect1=None, internal=None):
@@ -69126,6 +69257,8 @@ class docCopyType(GeneratedsSuper):
 
 
 class docBlockQuoteType(GeneratedsSuper):
+    node_type = "docblockquote"
+
     subclass = None
     superclass = None
     def __init__(self, para=None):
@@ -69206,6 +69339,8 @@ class docBlockQuoteType(GeneratedsSuper):
 
 
 class docParBlockType(GeneratedsSuper):
+    node_type = "docparblock"
+
     subclass = None
     superclass = None
     def __init__(self, para=None):
@@ -69286,6 +69421,8 @@ class docParBlockType(GeneratedsSuper):
 
 
 class docEmptyType(GeneratedsSuper):
+    node_type = "docempty"
+
     subclass = None
     superclass = None
     def __init__(self):

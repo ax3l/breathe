@@ -560,6 +560,9 @@ def raise_parse_error(node, msg):
 
 
 class MixedContainer:
+
+    node_type = "mixedcontainer"
+
     # Constants for category:
     CategoryNone = 0
     CategoryText = 1
@@ -719,6 +722,8 @@ def _cast(typ, value):
 
 
 class DoxygenType(GeneratedsSuper):
+    node_type = 'doxygen'
+
     subclass = None
     superclass = None
     def __init__(self, version=None, compound=None):
@@ -807,6 +812,8 @@ class DoxygenType(GeneratedsSuper):
 
 
 class CompoundType(GeneratedsSuper):
+    node_type = "compound"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, kind=None, name=None, member=None):
@@ -929,6 +936,8 @@ class CompoundType(GeneratedsSuper):
 
 
 class MemberType(GeneratedsSuper):
+    node_type = "member"
+
     subclass = None
     superclass = None
     def __init__(self, refid=None, kind=None, name=None):

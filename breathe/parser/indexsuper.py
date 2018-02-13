@@ -45,6 +45,9 @@ ExternalEncoding = 'ascii'
 
 
 class DoxygenTypeSub(supermod.DoxygenType):
+
+    node_type = "doxygen"
+
     def __init__(self, version=None, compound=None):
         super(DoxygenTypeSub, self).__init__(version, compound, )
 supermod.DoxygenType.subclass = DoxygenTypeSub
@@ -52,6 +55,9 @@ supermod.DoxygenType.subclass = DoxygenTypeSub
 
 
 class CompoundTypeSub(supermod.CompoundType):
+
+    node_type = "compound"
+
     def __init__(self, refid=None, kind=None, name=None, member=None):
         super(CompoundTypeSub, self).__init__(refid, kind, name, member, )
 supermod.CompoundType.subclass = CompoundTypeSub
@@ -59,6 +65,9 @@ supermod.CompoundType.subclass = CompoundTypeSub
 
 
 class MemberTypeSub(supermod.MemberType):
+
+    node_type = "member"
+
     def __init__(self, refid=None, kind=None, name=None):
         super(MemberTypeSub, self).__init__(refid, kind, name, )
 supermod.MemberType.subclass = MemberTypeSub
