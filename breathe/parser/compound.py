@@ -889,6 +889,7 @@ class compounddefType(GeneratedsSuper):
         self.programlisting = programlisting
         self.location = location
         self.listofallmembers = listofallmembers
+        self.namespaces = []
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -1261,11 +1262,13 @@ class compounddefType(GeneratedsSuper):
             obj_ = refType.factory()
             obj_.build(child_)
             self.innerclass.append(obj_)
+            #self.namespaces.append(obj_.content_[0].getValue())
             obj_.original_tagname_ = 'innerclass'
         elif nodeName_ == 'innernamespace':
             obj_ = refType.factory()
             obj_.build(child_)
             self.innernamespace.append(obj_)
+            #self.namespaces.append(obj_.content_[0].getValue())
             obj_.original_tagname_ = 'innernamespace'
         elif nodeName_ == 'innerpage':
             obj_ = refType.factory()
@@ -1992,10 +1995,13 @@ class refType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, refid=None, prot=None, valueOf_=None):
+        self.node_name = None
         self.original_tagname_ = None
         self.refid = _cast(None, refid)
         self.prot = _cast(None, prot)
         self.valueOf_ = valueOf_
+        self.mixedclass_ = MixedContainer
+        self.content_ = []
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -2081,9 +2087,15 @@ class refType(GeneratedsSuper):
             self.prot = value
             self.validate_DoxProtectionKind(self.prot)    # validate type DoxProtectionKind
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        pass
+        if child_.nodeType == Node.TEXT_NODE:
+            obj_ = self.mixedclass_(MixedContainer.CategoryText,
+                MixedContainer.TypeNone, '', child_.nodeValue)
+            self.content_.append(obj_)
+        if child_.nodeType == Node.TEXT_NODE:
+            self.valueOf_ += child_.nodeValue
+        elif child_.nodeType == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
 # end class refType
-
 
 class refTextType(GeneratedsSuper):
     node_type = "reftex"
@@ -31868,6 +31880,7 @@ class docListType(GeneratedsSuper):
             self.listitem = []
         else:
             self.listitem = listitem
+        self.node_subtype = None
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -69516,7 +69529,7 @@ def get_root_tag(node):
     return tag, rootClass
 
 
-def parse(inFileName, silence=False):
+def parse(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
@@ -69537,7 +69550,7 @@ def parse(inFileName, silence=False):
     return rootObj
 
 
-def parseEtree(inFileName, silence=False):
+def parseEtree(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
@@ -69561,7 +69574,7 @@ def parseEtree(inFileName, silence=False):
     return rootObj, rootElement, mapping, reverse_mapping
 
 
-def parseString(inString, silence=False):
+def parseString(inString, silence=True):
     '''Parse a string, create the object tree, and export it.
 
     Arguments:
@@ -69587,7 +69600,7 @@ def parseString(inString, silence=False):
     return rootObj
 
 
-def parseLiteral(inFileName, silence=False):
+def parseLiteral(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()

@@ -1065,7 +1065,7 @@ def get_root_tag(node):
     return tag, rootClass
 
 
-def parse(inFileName, silence=False):
+def parse(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
@@ -1086,7 +1086,7 @@ def parse(inFileName, silence=False):
     return rootObj
 
 
-def parseEtree(inFileName, silence=False):
+def parseEtree(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()
@@ -1110,7 +1110,7 @@ def parseEtree(inFileName, silence=False):
     return rootObj, rootElement, mapping, reverse_mapping
 
 
-def parseString(inString, silence=False):
+def parseString(inString, silence=True):
     '''Parse a string, create the object tree, and export it.
 
     Arguments:
@@ -1136,7 +1136,7 @@ def parseString(inString, silence=False):
     return rootObj
 
 
-def parseLiteral(inFileName, silence=False):
+def parseLiteral(inFileName, silence=True):
     parser = None
     doc = parsexml_(inFileName, parser)
     rootNode = doc.getroot()

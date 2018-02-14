@@ -118,9 +118,11 @@ class refTypeSub(supermod.refType):
 
     node_type = "ref"
 
-    def __init__(self, refid=None, prot=None, valueOf_=None):
+    def __init__(self, node_name, refid=None, prot=None, valueOf_=None):
         super(refTypeSub, self).__init__(refid, prot, valueOf_, )
 supermod.refType.subclass = refTypeSub
+
+        self.node_name = node_name
 # end class refTypeSub
 
 
@@ -466,7 +468,10 @@ class docListTypeSub(supermod.docListType):
 
     node_type = "doclist"
 
-    def __init__(self, listitem=None):
+    def __init__(self, listitem=None, subtype=""):
+        self.node_subtype = "itemized"
+        if subtype is not "":
+            self.node_subtype = subtype
         super(docListTypeSub, self).__init__(listitem, )
 supermod.docListType.subclass = docListTypeSub
 # end class docListTypeSub
@@ -737,7 +742,7 @@ def get_root_tag(node):
     return tag, rootClass
 
 
-def parse(inFilename, silence=False):
+def parse(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()
@@ -758,7 +763,7 @@ def parse(inFilename, silence=False):
     return rootObj
 
 
-def parseEtree(inFilename, silence=False):
+def parseEtree(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()
@@ -782,7 +787,7 @@ def parseEtree(inFilename, silence=False):
     return rootObj, rootElement, mapping, reverse_mapping
 
 
-def parseString(inString, silence=False):
+def parseString(inString, silence=True):
     if sys.version_info.major == 2:
         from StringIO import StringIO
     else:
@@ -806,7 +811,7 @@ def parseString(inString, silence=False):
     return rootObj
 
 
-def parseLiteral(inFilename, silence=False):
+def parseLiteral(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()

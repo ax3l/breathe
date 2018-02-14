@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 #
 # Generated Tue Feb 13 19:17:13 2018 by generateDS.py version 2.29.5.
 # Python 2.7.13 (default, Nov 24 2017, 17:33:09)  [GCC 6.3.0 20170516]
@@ -83,7 +82,7 @@ def get_root_tag(node):
     return tag, rootClass
 
 
-def parse(inFilename, silence=False):
+def parse(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()
@@ -104,7 +103,7 @@ def parse(inFilename, silence=False):
     return rootObj
 
 
-def parseEtree(inFilename, silence=False):
+def parseEtree(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()
@@ -128,7 +127,7 @@ def parseEtree(inFilename, silence=False):
     return rootObj, rootElement, mapping, reverse_mapping
 
 
-def parseString(inString, silence=False):
+def parseString(inString, silence=True):
     if sys.version_info.major == 2:
         from StringIO import StringIO
     else:
@@ -152,7 +151,7 @@ def parseString(inString, silence=False):
     return rootObj
 
 
-def parseLiteral(inFilename, silence=False):
+def parseLiteral(inFilename, silence=True):
     parser = None
     doc = parsexml_(inFilename, parser)
     rootNode = doc.getroot()
