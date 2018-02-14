@@ -309,6 +309,9 @@ class NodeTypeAccessor(Accessor):
 
         data_object = self.selector(node_stack)
         try:
+            # hack: somehow len-1-lists of compounddefType creep in here
+            if isinstance(data_object, list):
+                data_object = data_object[0]
             return data_object.node_type
         except AttributeError as e:
 
@@ -316,6 +319,8 @@ class NodeTypeAccessor(Accessor):
             # until we fix the parsing
             if type(data_object) == six.text_type:
                 return "unicode"
+            elif type(data_object) == str:
+                return "ascii"
             else:
                 raise e
 
@@ -323,7 +328,11 @@ class NodeTypeAccessor(Accessor):
 class KindAccessor(Accessor):
 
     def __call__(self, node_stack):
-        return self.selector(node_stack).kind
+        node = self.selector(node_stack)
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(node, list):
+            node = node[0]
+        return node.kind
 
 
 class AttributeAccessor(Accessor):
@@ -338,7 +347,11 @@ class AttributeAccessor(Accessor):
         self.attribute_name = attribute_name
 
     def __call__(self, node_stack):
-        return getattr(self.selector(node_stack), self.attribute_name)
+        node = self.selector(node_stack)
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(node, list):
+            node = node[0]
+        return getattr(node, self.attribute_name)
 
 
 class LambdaAccessor(Accessor):
@@ -956,7 +969,7 @@ class FilterFactory(object):
                     InFilter(NodeTypeAccessor(Node()), ["compounddef"]),
                     NotFilter(InFilter(KindAccessor(Node()), ["namespace"])),
                     NotFilter(
-                        FilePathFilter(LambdaAccessor(Node(), lambda x: x.location),
+                        FilePathFilter(LambdaAccessor(Node(), lambda x: x[0].location if isinstance(x, list) else x.location),
                                        filename, self.path_handler)
                         )
                     )

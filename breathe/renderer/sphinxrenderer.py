@@ -95,7 +95,8 @@ def get_param_decl(param):
         for p in node.content_:
             value = p.value
             if not isinstance(value, six.text_type):
-                value = value.valueOf_
+                if not isinstance(value, str):
+                    value = value.valueOf_
             result.append(value)
         return ' '.join(result)
 
@@ -201,6 +202,10 @@ class SphinxRenderer(object):
         node = node_stack[0]
         # An enumvalue node doesn't have location, so use its parent node for detecting
         # the domain instead.
+
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(node, list):
+            node = node[0]
         if isinstance(node, six.string_types) or node.node_type == "enumvalue":
             node = node_stack[1]
         filename = get_filename(node)
@@ -225,6 +230,11 @@ class SphinxRenderer(object):
             names.append(node.name)
 
         for node in node_stack:
+            # hack: somehow len-1-lists of compounddefType creep in here
+            if isinstance(node, list):
+                node = node[0]
+            if node.node_type == 'fakeparent':
+                return 'fakeparent'
             if node.node_type == 'ref' and len(names) == 0:
                 return node.valueOf_
             if (node.node_type == 'compound' and node.kind not in ['file', 'namespace']) or \
@@ -248,6 +258,9 @@ class SphinxRenderer(object):
 
     def create_template_node(self, decl):
         """Creates a node for the ``template <...>`` part of the declaration."""
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(decl, list):
+            decl = decl[0]
         if not decl.templateparamlist:
             return None
         template = 'template '
@@ -411,6 +424,9 @@ class SphinxRenderer(object):
 
         parent_context = self.context.create_child_context(file_data)
         new_context = parent_context.create_child_context(file_data.compounddef)
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(file_data.compounddef, list):
+            file_data.compounddef = file_data.compounddef[0]
         if file_data.compounddef.includes:
             for include in file_data.compounddef.includes:
                 contentnode.extend(self.render(include, new_context.create_child_context(include)))
@@ -608,11 +624,11 @@ class SphinxRenderer(object):
         neighbouring instances of these things tend to each be in a separate neighbouring para tag.
         """
 
-        nodelist = self.render_iterable(node.content)
-        nodelist.extend(self.render_iterable(node.images))
+        nodelist = self.render_iterable(node.content_)
+        nodelist.extend(self.render_iterable(node.image))
 
         # Returns, user par's, etc
-        definition_nodes = self.render_iterable(node.simplesects)
+        definition_nodes = self.render_iterable(node.simplesect)
         # Parameters/Exceptions
         definition_nodes.extend(self.render_iterable(node.parameterlist))
 
@@ -806,9 +822,15 @@ class SphinxRenderer(object):
 
     def visit_ref(self, node):
         def get_node_info(file_data):
-            name = node.content_[0].getValue()
-            name = name.rsplit("::", 1)[-1]
-            return name, file_data.compounddef.kind
+            name = ""
+            if len(node.content_) > 0:
+                name = node.content_[0].getValue()
+                name = name.rsplit("::", 1)[-1]
+            cmpd = file_data.compounddef
+            # hack: somehow len-1-lists of compounddefType creep in here
+            if isinstance(cmpd, list):
+                cmpd = cmpd[0]
+            return name, cmpd.kind
         return self.visit_compound(node, False, get_node_info=get_node_info)
 
     def visit_doclistitem(self, node):
@@ -1130,8 +1152,9 @@ class SphinxRenderer(object):
 
     def dispatch_compound(self, node):
         """Dispatch handling of a compound node to a suitable visit method."""
-        if node.kind in ["file", "dir", "page", "example", "group"]:
-            return self.visit_file(node)
+        if hasattr(node, 'kind'):
+            if node.kind in ["file", "dir", "page", "example", "group"]:
+                return self.visit_file(node)
         return self.visit_compound(node)
 
     def dispatch_memberdef(self, node):
@@ -1199,6 +1222,9 @@ class SphinxRenderer(object):
         elif isinstance(node, six.string_types):
             result = self.visit_unicode(node)
         else:
+            # hack: somehow len-1-lists of compounddefType creep in here
+            if isinstance(node, list):
+                node = node[0]
             method = SphinxRenderer.methods.get(node.node_type, SphinxRenderer.visit_unknown)
             result = method(self, node)
         self.context = saved_context

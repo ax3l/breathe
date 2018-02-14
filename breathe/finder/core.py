@@ -26,6 +26,10 @@ class DoxygenItemFinderFactory(object):
 
     def create_finder(self, data_object):
 
+        # hack: somehow len-1-lists of compounddefType creep in here
+        if isinstance(data_object, list):
+            data_object = data_object[0]
+
         return self.finders[data_object.node_type](self.project_info, data_object, self)
 
 
