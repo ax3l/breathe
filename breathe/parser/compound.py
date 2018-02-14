@@ -1691,6 +1691,8 @@ class compoundRefType(GeneratedsSuper):
         self.prot = _cast(None, prot)
         self.virt = _cast(None, virt)
         self.valueOf_ = valueOf_
+        self.mixedclass_ = MixedContainer
+        self.content_ = []
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -1798,7 +1800,14 @@ class compoundRefType(GeneratedsSuper):
             self.virt = value
             self.validate_DoxVirtualKind(self.virt)    # validate type DoxVirtualKind
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        pass
+        if child_.nodeType == Node.TEXT_NODE:
+            obj_ = self.mixedclass_(MixedContainer.CategoryText,
+                MixedContainer.TypeNone, '', child_.nodeValue)
+            self.content_.append(obj_)
+        if child_.nodeType == Node.TEXT_NODE:
+            self.valueOf_ += child_.nodeValue
+        elif child_.nodeType == Node.CDATA_SECTION_NODE:
+            self.valueOf_ += '![CDATA['+child_.nodeValue+']]'
 # end class compoundRefType
 
 
